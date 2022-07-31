@@ -1,0 +1,14 @@
+type: hyperskill
+title: Cinema Room REST Service
+language: English
+summary: <p>Always wanted to have your private&nbsp;movie theater and screen only
+  the movies you like? You can buy a fancy projector and set it up in a garage, but
+  how can you sell tickets? Having a booth is&nbsp;old-fashioned, so&nbsp;let&#39;s
+  create a special service for that!&nbsp;Make good use of Spring and write a REST
+  service that can&nbsp;show the available seats,&nbsp;sell and&nbsp;refund tickets,&nbsp;and
+  display the statistics of your venue. Pass me the popcorn, please!</p><br/><br/>Learn
+  more at <a href="https://hyperskill.org/projects/263?utm_source=ide&utm_medium=ide&utm_campaign=ide&utm_content=project-card">https://hyperskill.org/projects/263</a>
+programming_language: Kotlin
+content:
+- Cinema Room REST Service
+mode: Study
