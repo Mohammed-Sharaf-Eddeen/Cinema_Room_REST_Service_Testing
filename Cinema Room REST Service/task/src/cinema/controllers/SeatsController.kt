@@ -5,10 +5,9 @@ import cinema.configuration.CustomException
 import cinema.models.Reservation
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -28,7 +27,7 @@ class SeatsController {
         seat.price = if (seat.row <= 4) 10 else 8
 
         if (seat.row > TOTAL_ROWS || seat.column > TOTAL_COLUMNS || seat.row <= 0 || seat.column <= 0) {
-            throw CustomException(error = "The number of a row or a column is out of bounds!")
+            throw CustomException("The number of a row or a column is out of bounds!", HttpStatus.BAD_REQUEST)
         }
 
         if (SeatsInfo.availableSeats.contains(seat)) {
@@ -37,7 +36,7 @@ class SeatsController {
             SeatsInfo.reservations.add(reservation)
             return reservation
         } else {
-            throw CustomException(error = "The ticket has been already purchased!")
+            throw CustomException("The ticket has been already purchased!", HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -51,7 +50,24 @@ class SeatsController {
                 return mapOf<String, Seat>("returned_ticket" to reservation.ticket)
             }
         }
-        throw CustomException("Wrong token!")
+        throw CustomException("Wrong token!", HttpStatus.BAD_REQUEST)
+    }
+
+    @PostMapping("/stats")
+    fun showStats(@RequestParam(defaultValue = "") password: String): Map<String, Int> {
+        if (password != "super_secret"){
+            throw CustomException("The password is wrong!", HttpStatus.UNAUTHORIZED)
+        }
+
+        var currentIncome = 0
+        for (reservation in SeatsInfo.reservations) {
+            currentIncome += reservation.ticket.price
+        }
+
+        return mapOf("current_income" to currentIncome,
+            "number_of_available_seats" to SeatsInfo.availableSeats.size,
+            "number_of_purchased_tickets" to SeatsInfo.reservations.size
+        )
     }
     
     object SeatsInfo {

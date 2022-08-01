@@ -392,6 +392,111 @@ files:
         };
     }
   learner_created: false
+- name: src/cinema/configuration/CustomException.kt
+  visible: true
+  text: |-
+    package cinema.configuration
+
+    class CustomException(error: String): RuntimeException(error) {
+    }
+  learner_created: true
+- name: src/cinema/configuration/CustomErrorResponse.kt
+  visible: true
+  text: |-
+    package cinema.models
+
+    class CustomErrorResponse (var error : String? = null) {
+
+    }
+  learner_created: true
+- name: src/cinema/models/Seat.kt
+  visible: true
+  text: |-
+    package cinema
+
+    data class Seat (val row: Int, val column: Int, var price: Int) {
+
+    }
+  learner_created: true
+- name: src/cinema/controllers/SeatsController.kt
+  visible: true
+  text: "package cinema.controllers\n\nimport cinema.Seat\nimport cinema.configuration.CustomException\n\
+    import cinema.models.Reservation\nimport com.fasterxml.jackson.annotation.JsonIgnore\n\
+    import com.fasterxml.jackson.annotation.JsonProperty\nimport org.springframework.web.bind.annotation.GetMapping\n\
+    import org.springframework.web.bind.annotation.PostMapping\nimport org.springframework.web.bind.annotation.RequestBody\n\
+    import org.springframework.web.bind.annotation.RestController\nimport java.util.*\n\
+    import kotlin.collections.ArrayList\n\nconst val TOTAL_ROWS = 9\nconst val TOTAL_COLUMNS\
+    \ = 9\n\n@RestController\nclass SeatsController {\n\n    @GetMapping(\"/seats\"\
+    )\n    fun getSeatsInfo(): SeatsInfo {\n        return SeatsInfo\n    }\n\n  \
+    \  @PostMapping(\"/purchase\")\n    fun purchaseOneAvailableSeat(@RequestBody\
+    \ seat: Seat) : Reservation {\n        seat.price = if (seat.row <= 4) 10 else\
+    \ 8\n\n        if (seat.row > TOTAL_ROWS || seat.column > TOTAL_COLUMNS || seat.row\
+    \ <= 0 || seat.column <= 0) {\n            throw CustomException(error = \"The\
+    \ number of a row or a column is out of bounds!\")\n        }\n\n        if (SeatsInfo.availableSeats.contains(seat))\
+    \ {\n            SeatsInfo.availableSeats.remove(seat)\n            val reservation\
+    \ = Reservation(UUID.randomUUID(), seat)\n            SeatsInfo.reservations.add(reservation)\n\
+    \            return reservation\n        } else {\n            throw CustomException(error\
+    \ = \"The ticket has been already purchased!\")\n        }\n    }\n\n    @PostMapping(\"\
+    /return\")\n    fun returnOneTicket(@RequestBody request: Map<String, UUID>):\
+    \ Map<String, Seat> {\n        val token = request[\"token\"]\n        for (reservation\
+    \ in SeatsInfo.reservations) {\n            if (reservation.token == token) {\n\
+    \                SeatsInfo.reservations.remove(reservation)\n                SeatsInfo.availableSeats.add(reservation.ticket)\n\
+    \                return mapOf<String, Seat>(\"returned_ticket\" to reservation.ticket)\n\
+    \            }\n        }\n        throw CustomException(\"Wrong token!\")\n \
+    \   }\n    \n    object SeatsInfo {\n        @get:JsonProperty(\"total_rows\"\
+    )\n        val totalRows = TOTAL_ROWS\n\n        @get:JsonProperty(\"total_columns\"\
+    )\n        val totalColumns = TOTAL_COLUMNS\n\n        @get:JsonProperty(\"available_seats\"\
+    )\n        val availableSeats: ArrayList<Seat> = ArrayList<Seat>()\n\n       \
+    \ @get:JsonIgnore\n        val reservations: ArrayList<Reservation> = ArrayList<Reservation>()\n\
+    \n        init {\n            var price: Int\n            for (i in 1..totalRows)\
+    \ {\n                price = if (i <= 4) 10 else 8\n                for (j in\
+    \ 1..totalColumns) {\n                    availableSeats.add(Seat(i, j, price))\n\
+    \                }\n            }\n        }\n    }\n}"
+  learner_created: true
+- name: src/cinema/models/Reservation.kt
+  visible: true
+  text: |-
+    package cinema.models
+
+    import cinema.Seat
+    import java.util.*
+
+
+    class Reservation(val token: UUID, val ticket: Seat) {
+    }
+  learner_created: true
+- name: src/cinema/configuration/CustomExceptionHandler.kt
+  visible: true
+  text: |-
+    package cinema.configuration
+
+    import cinema.models.CustomErrorResponse
+    import org.springframework.http.HttpStatus
+    import org.springframework.http.ResponseEntity
+    import org.springframework.web.bind.annotation.ControllerAdvice
+    import org.springframework.web.bind.annotation.ExceptionHandler
+
+    @ControllerAdvice
+    class CustomExceptionHandler {
+        @ExceptionHandler
+        fun handleException(exc : CustomException) : ResponseEntity<CustomErrorResponse> {
+            val studentErrorResponse = CustomErrorResponse(exc.message)
+
+            return ResponseEntity(studentErrorResponse, HttpStatus.BAD_REQUEST)
+        }
+
+        @ExceptionHandler
+        fun handleGenericException(exc : Exception) : ResponseEntity<CustomErrorResponse> {
+            val studentErrorResponse = CustomErrorResponse(exc.message)
+
+            return ResponseEntity(studentErrorResponse, HttpStatus.BAD_REQUEST)
+        }
+    }
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/20460#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Well done! You've finished the project. Select a new project on <a href="https://hyperskill.org/projects">JetBrains
+    Academy</a> to continue learning.
+  time: Mon, 01 Aug 2022 13:53:18 UTC
 record: -1
