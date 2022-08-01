@@ -22,6 +22,8 @@
           <stringArguments>
             <stringArg name="classpath">
               <args>
+                <arg>$MODULE_DIR$/../../../../Cinema Room REST Service/task/build/classes/kotlin/main</arg>
+                <arg>$MODULE_DIR$/../../../../Cinema Room REST Service/task/build/resources/main</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.6.10/e80fe6ac3c3573a80305f5ec43f86b829e8ab53d/kotlin-stdlib-jdk8-1.6.10.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-actuator/2.5.6/e5057388311b3566d49ba2021673e0022da1a99c/spring-boot-starter-actuator-2.5.6.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-web/2.5.6/46b479490170914f7477b96a21241183b181c24d/spring-boot-starter-web-2.5.6.jar</arg>

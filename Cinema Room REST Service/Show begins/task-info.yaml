@@ -118,9 +118,9 @@ files:
 - name: src/cinema/controllers/SeatsController.kt
   visible: true
   learner_created: true
-feedback_link: https://hyperskill.org/projects/263/stages/1331/implement#comment
+feedback_link: https://hyperskill.org/learn/step/20457#comment
 status: Solved
 feedback:
   message: Congratulations!
-  time: Sun, 31 Jul 2022 22:48:44 UTC
-record: -1
+  time: Mon, 01 Aug 2022 02:38:07 UTC
+record: 1

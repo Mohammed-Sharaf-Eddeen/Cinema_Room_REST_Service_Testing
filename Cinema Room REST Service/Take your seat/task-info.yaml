@@ -225,6 +225,40 @@ files:
         };
     }
   learner_created: false
-feedback_link: https://hyperskill.org/projects/263/stages/1332/implement#comment
-status: Unchecked
-record: -1
+- name: src/cinema/models/Seat.kt
+  visible: true
+  text: |-
+    package cinema
+
+    class Seat (val row: Int, val column: Int) {
+    }
+  learner_created: true
+- name: src/cinema/controllers/SeatsController.kt
+  visible: true
+  text: "package cinema.controllers\n\nimport cinema.Seat\nimport com.fasterxml.jackson.annotation.JsonProperty\n\
+    import org.springframework.web.bind.annotation.GetMapping\nimport org.springframework.web.bind.annotation.RestController\n\
+    \nconst val TOTAL_ROWS = 9\nconst val TOTAL_COLUMNS = 9\n\n@RestController\nclass\
+    \ SeatsController {\n\n    @GetMapping(\"/seats\")\n    fun getSeatsInfo(): SeatsInfo\
+    \ {\n        return SeatsInfo\n    }\n    \n    object SeatsInfo {\n        @get:JsonProperty(\"\
+    total_rows\")\n        val totalRows = TOTAL_ROWS\n\n        @get:JsonProperty(\"\
+    total_columns\")\n        val totalColumns = TOTAL_COLUMNS\n\n        @get:JsonProperty(\"\
+    available_seats\")\n        val availableSeats: ArrayList<Seat> = ArrayList<Seat>()\n\
+    \n        init {\n            for (i in 1..totalRows) {\n                for (j\
+    \ in 1..totalColumns) {\n                    availableSeats.add(Seat(i, j))\n\
+    \                }\n            }\n        }\n    }\n}"
+  learner_created: true
+- name: src/cinema/configuration/CustomException.kt
+  visible: true
+  learner_created: true
+- name: src/cinema/configuration/CustomErrorResponse.kt
+  visible: true
+  learner_created: true
+- name: src/cinema/configuration/CustomExceptionHandler.kt
+  visible: true
+  learner_created: true
+feedback_link: https://hyperskill.org/learn/step/20458#comment
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Mon, 01 Aug 2022 11:04:15 UTC
+record: 2
